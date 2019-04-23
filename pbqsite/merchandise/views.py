@@ -1,6 +1,24 @@
-from django.shortcuts import render
-from django.http import HttpResponse
+import base64
+from io import BytesIO
 
-# Create your views here.
+from django.shortcuts import render
+import qrcode
+
+
 def index(request):
-    return HttpResponse("Hello, world. May I make your order?")
+    products = []
+    for i in [1, 2]:
+        product = {
+            'id': i,
+            'name': 'Product %s' % i,
+        }
+        pay_url = 'https://www.amazon.com/iss/credit/storecardmember?_encoding=UTF8&plattr=PLCCFOOT&ref_=footer_plcc'
+        img = qrcode.make(pay_url)
+        buffered = BytesIO()
+        img.save(buffered)
+        img_str = base64.b64encode(buffered.getvalue()).decode('ascii')
+        product['qrcode'] = img_str
+
+        products.append(product)
+
+    return render(request, 'merchandise/index.html', {'products': products})
