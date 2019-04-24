@@ -22,3 +22,4 @@ def index(request):
         products.append(product)
 
     return render(request, 'merchandise/index.html', {'products': products})
+
