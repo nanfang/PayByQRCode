@@ -9,43 +9,47 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
     <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,700" rel="stylesheet">
     <!-- Bulma Version 0.7.4-->
-    <link rel="stylesheet" href="https://unpkg.com/bulma@0.7.4/css/bulma.min.css" />
+    <link rel="stylesheet" href="https://unpkg.com/bulma@0.7.4/css/bulma.min.css"/>
     <link rel="stylesheet" type="text/css" href="https://dansup.github.io/bulma-templates/css/login.css">
 </head>
 
 <body>
-    <section class="hero is-success is-fullheight">
-        <div class="hero-body">
-            <div class="container has-text-centered">
-                <div class="column is-4 is-offset-4">
-                    <h3 class="title has-text-grey">Scan & Pay</h3>
-                    <p class="subtitle has-text-grey">Pay $250 to <b>Awesome Store</b></p>
-                    <div class="box">
-                        <figure class="avatar">
-                            <img src="https://source.unsplash.com/hLyd1LukQ7E">
-                        </figure>
-                        <form method="post">
-                            {% csrf_token %}
-                            <div class="field">
-                                <div class="control">
-                                    <input class="input is-large" placeholder="Your Account" name="pay_user" autofocus="">
-                                </div>
+<section class="hero is-success is-fullheight">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <div class="column is-4 is-offset-4">
+                <h3 class="title has-text-grey">Scan & Pay</h3>
+                <p class="subtitle has-text-grey">
+                    Pay <b> <span class="has-text-danger"> ${{ product.price }} </span></b> to <b>{{ to }}</b> <br/>
+                    for a <b>{{ product.name }} </b> that <b class="has-text-primary"> {{ pay_for }} </b> wants!
+                </p>
+                <div class="box">
+                    <figure class="avatar">
+                        <img src="{{ product.image }}">
+                    </figure>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="field">
+                            <div class="control">
+                                <input class="input is-large" placeholder="Your Pay Account" name="pay_from"
+                                       autofocus="">
+                                <input type="hidden" name="pay_for" value="{{pay_for}}">
+                                <input type="hidden" name="pay_to" value="{{pay_to}}">
+                                <input type="hidden" name="product_id" value="{{product.id}}">
                             </div>
+                        </div>
+                        <button class="button is-block is-info is-large is-fullwidth">Send Money</button>
 
-                            <button class="button is-block is-info is-large is-fullwidth">Send the Money</button>
-
-                        </form>
-                    </div>
-                    <p class="has-text-grey">
-                        <a href="../">Sign Up</a> &nbsp;·&nbsp;
-                        <a href="../">Forgot Password</a> &nbsp;·&nbsp;
-                        <a href="../">Need Help?</a>
-                    </p>
+                    </form>
                 </div>
+                <p class="has-text-grey">
+                    <a href="../">Sign Up</a> &nbsp;·&nbsp;
+                    <a href="../">Forgot Password</a> &nbsp;·&nbsp;
+                    <a href="../">Need Help?</a>
+                </p>
             </div>
         </div>
-    </section>
-
+    </div>
+</section>
 </body>
-
 </html>

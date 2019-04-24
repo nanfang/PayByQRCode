@@ -27,8 +27,6 @@ class PaymentConsumer(AsyncWebsocketConsumer):
 
     async def payment_message(self, event):
         message = event['message']
-        print('new message: %s' % message)
+        print('payment message: %s' % message)
         # Send message to WebSocket
-        await self.send(text_data=json.dumps({
-            'message': message
-        }))
+        await self.send(text_data=message)

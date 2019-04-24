@@ -20,12 +20,12 @@ var paySocket = new WebSocket(
 
 paySocket.onmessage = function(e){
     var data = JSON.parse(e.data);
-    var message = data['message'];
-//    alert(message);
-    // get from message
-    product_id = 2;
+    product_id = data["product_id"];
+    pay_from = data["pay_from"];
     deactivateModal("#modal-card-pay-" + product_id);
     activateModal("#modal-card-paid-" + product_id);
+    $("#pay-from-" + product_id).text(data["pay_from"]);
+    $("#product-count-" + product_id).text(data["product_count"]);
 };
 
 setTimeout(function(){

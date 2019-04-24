@@ -19,15 +19,33 @@
     </style>
 </head>
 <body>
-<section class="hero is-info is-small">
-    <div class="hero-body">
-        <div class="container has-text-centered">
-            <p class="title">
-                Merchandise Store
-            </p>
+
+<nav class="navbar has-shadow">
+    <div class="container">
+        <div class="navbar-brand">
+            <a class="navbar-item" href="#" >
+                <p class="title"> {{ store_name }} </p>
+            </a>
+
+            <div class="navbar-burger burger" data-target="navMenu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+
+        <div id="navMenu" class="navbar-menu">
+            <div class="navbar-end">
+                <div class="navbar-item is-active">
+                    <a class="navbar-link" href="/pay/stats/?customer={{ current_customer }}">
+                        Hello, {{ current_customer }}!
+                    </a>
+                </div>
+            </div>
         </div>
     </div>
-</section>
+</nav>
+
 <div class="box cta">
     <p class="has-text-centered">
         <span class="tag is-primary">Click</span>
@@ -51,8 +69,10 @@
                 <div class="card-content">
                     <div class="content">
                         <h4>{{ product.name }}</h4>
-                        <p>${{ product.price }} {{ product.count}} left</p>
-                        <span class="button is-link modal-button" data-target="modal-card-pay-{{ product.id }}">Buy</span>
+                        <p> <span class="plan-price-amount">${{ product.price }}</span> </p>
+                        <p> <span id="product-count-{{product.id}}">{{ product.count}}</span> left</p>
+                        <span class="button is-link modal-button"
+                              data-target="modal-card-pay-{{ product.id }}"> Buy </span>
                     </div>
                 </div>
             </div>
@@ -81,10 +101,8 @@
                             </div>
                             <div class="media-content">
                                 <p class="title is-4">{{ product.name }}</p>
-                                <p class="subtitle is-6">Price: $250</p>
-
+                                <p class="subtitle is-6">Price: ${{ product.price }}</p>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -93,7 +111,6 @@
             <button class="modal-close is-large" aria-label="close"></button>
         </div>
         <!-- end Pay Modal-->
-
         <!--  Paid Modal -->
         <div id="modal-card-paid-{{ product.id }}" class="modal modal-fx-3dSlit">
             <div class="modal-background"></div>
@@ -101,9 +118,8 @@
                 <!-- content -->
                 <div class="card">
                     <div class="card-header">
-                        <p class="card-header-title is-6 is-centered">Congratulation, it is paid !</p>
+                        <p class="card-header-title is-6 is-centered">Congratulation, it is paid by&nbsp;<span id="pay-from-{{ product.id }}" class="is-primary"></span> !</p>
                     </div>
-
                     <div class="card-content">
                         <div class="media">
                             <div class="media-left">
@@ -114,10 +130,8 @@
                             </div>
                             <div class="media-content">
                                 <p class="title is-4">{{ product.name }}</p>
-                                <p class="subtitle is-6">Price: $250</p>
-
+                                <p class="subtitle is-6">Price: $ {{ product.price }}</p>
                             </div>
-
                         </div>
                     </div>
                 </div>
@@ -127,11 +141,8 @@
         </div>
         <!-- end Paid Modal-->
         {% endfor %}
-
     </div>
 </section>
-
-
 <script src="https://unpkg.com/bulma-modal-fx/dist/js/modal-fx.min.js"></script>
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
 <script type="text/javascript" src="{% static '/merchandise/wild.js' %}"></script>

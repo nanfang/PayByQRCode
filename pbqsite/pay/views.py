@@ -1,7 +1,17 @@
+import json
 from django.shortcuts import render
 from django.views import View
 import channels.layers
 from asgiref.sync import async_to_sync
+
+from merchandise.models import products, deliver_product
+from pay.models import get_balance, set_balance
+
+
+def transaction(pay_for, pay_from, pay_to, product):
+    set_balance(pay_from, get_balance(pay_from) - product.price)
+    set_balance(pay_to, get_balance(pay_to) + product.price)
+    deliver_product(pay_for, product.id)
 
 
 class PayView(View):
@@ -10,20 +20,36 @@ class PayView(View):
         self.channel_layer = channels.layers.get_channel_layer()
 
     def get(self, request, *args, **kwargs):
-        # form = self.form_class(initial=self.initial)
-        # return render(request, self.template_name, {'form': form})
-
-        return render(request, 'pay/pay_form.html', {})
+        # /pay/?pay_to=Merchandise+Store&product_id=2&product_name=Powerful+Drill&pay_for=Fang
+        return render(request, 'pay/pay_form.html', dict(
+            pay_to=request.GET['pay_to'],
+            product=products[int(request.GET['product_id'])],
+            pay_for=request.GET['pay_for'],
+        ))
 
     def post(self, request, *args, **kwargs):
-        # form = self.form_class(request.POST)
-        # if form.is_valid():
-        #     # <process form cleaned data>
-        #     return HttpResponseRedirect('/success/')
-        async_to_sync(self.channel_layer.group_send)('PAYMENT_CHANNEL_GROUP',
-                                                {
-                                                    'type': 'payment_message',
-                                                    'message': 'Hello Payment'
-                                                }, )
+        pay_for = request.POST['pay_for']
+        pay_from = request.POST['pay_from']
+        pay_to = request.POST['pay_to']
+        product = products[int(request.GET['product_id'])]
 
-        return render(request, 'pay/pay_result.html', {})
+        transaction(pay_for, pay_from, pay_to, product)
+
+        async_to_sync(self.channel_layer.group_send)('PAYMENT_CHANNEL_GROUP',
+                                                     {
+                                                         'type': 'payment_message',
+                                                         'message': json.dumps(
+                                                             {'pay_for': pay_for,
+                                                              'pay_from': pay_from,
+                                                              'pay_to': pay_to,
+                                                              'product_id': product.id,
+                                                              'product_count': product.count,
+                                                              }),
+                                                     }, )
+
+        return render(request, 'pay/pay_result.html', dict(
+            pay_for=pay_for,
+            pay_from=pay_from,
+            pay_to=pay_to,
+            product=product,
+        ))
