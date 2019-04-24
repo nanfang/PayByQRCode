@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 {% load static %}
+{% load merchandise_extras %}
 <html>
 <head>
     <meta charset="utf-8">
@@ -43,17 +44,16 @@
             <div class="card is-shady">
                 <div class="card-image">
                     <figure class="image is-4by3">
-                        <img src="https://source.unsplash.com/hLyd1LukQ7E" alt="butterfly image" class="modal-button"
+                        <img src="{{ product.image}}" alt="butterfly image" class="modal-button"
                              data-target="modal-image4">
                     </figure>
                 </div>
                 <div class="card-content">
                     <div class="content">
                         <h4>{{ product.name }}</h4>
-                        <p>$250 200 left</p>
+                        <p>${{ product.price }} {{ product.count}} left</p>
                         <span class="button is-link modal-button" data-target="modal-card-pay-{{ product.id }}">Buy</span>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -68,14 +68,14 @@
                     </div>
                     <div class="card-image">
                         <figure class="image is-4by4">
-                            <img src="data:image/png;base64,{{ product.qrcode }}" alt="butterfly">
+                            <img src="data:image/png;base64,{{ codes|get_item:product.id }}" alt="butterfly">
                         </figure>
                     </div>
                     <div class="card-content">
                         <div class="media">
                             <div class="media-left">
                                 <figure class="image is-48x48">
-                                    <img src="https://source.unsplash.com/hLyd1LukQ7E"
+                                    <img src="{{product.image}}"
                                          alt="linda barret avatar">
                                 </figure>
                             </div>
@@ -108,7 +108,7 @@
                         <div class="media">
                             <div class="media-left">
                                 <figure class="image is-48x48">
-                                    <img src="https://source.unsplash.com/hLyd1LukQ7E"
+                                    <img src="{{ product.image }}"
                                          alt="linda barret avatar">
                                 </figure>
                             </div>
