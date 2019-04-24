@@ -3,6 +3,7 @@ from io import BytesIO
 
 from django.shortcuts import render
 import qrcode
+from django.utils.http import urlencode
 
 
 def index(request):
@@ -12,7 +13,8 @@ def index(request):
             'id': i,
             'name': 'Product %s' % i,
         }
-        pay_url = 'https://www.amazon.com/iss/credit/storecardmember?_encoding=UTF8&plattr=PLCCFOOT&ref_=footer_plcc'
+        scheme = request.is_secure() and "https" or "http"
+        pay_url = '%s://%s/pay/?%s' % (scheme, request.get_host(), urlencode({'to': 'Merchandise Store'}))
         img = qrcode.make(pay_url)
         buffered = BytesIO()
         img.save(buffered)

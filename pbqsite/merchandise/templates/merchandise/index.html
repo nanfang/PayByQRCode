@@ -22,7 +22,7 @@
     <div class="hero-body">
         <div class="container has-text-centered">
             <p class="title">
-                Scan & Pay
+                Merchandise Store
             </p>
         </div>
     </div>
@@ -47,22 +47,25 @@
                              data-target="modal-image4">
                     </figure>
                 </div>
-                <div class="card-content  modal-button" data-target="modal-card{{ product.id }}">
+                <div class="card-content">
                     <div class="content">
                         <h4>{{ product.name }}</h4>
                         <p>$250 200 left</p>
-                        <span class="button is-link modal-button">Buy</span>
+                        <span class="button is-link modal-button" data-target="modal-card-pay-{{ product.id }}">Buy</span>
                     </div>
 
                 </div>
             </div>
         </div>
-        <!--  HERE BE MODALS -->
-        <div id="modal-card{{ product.id }}" class="modal modal-fx-3dSlit">
+        <!--  Pay Modal -->
+        <div id="modal-card-pay-{{ product.id }}" class="modal modal-fx-3dSlit">
             <div class="modal-background"></div>
             <div class="modal-content is-tiny">
                 <!-- content -->
                 <div class="card">
+                    <div class="card-header">
+                        <p class="card-header-title is-6 is-centered">Scan the QR code to pay</p>
+                    </div>
                     <div class="card-image">
                         <figure class="image is-4by4">
                             <img src="data:image/png;base64,{{ product.qrcode }}" alt="butterfly">
@@ -79,7 +82,7 @@
                             <div class="media-content">
                                 <p class="title is-4">{{ product.name }}</p>
                                 <p class="subtitle is-6">Price: $250</p>
-                                <p class="subtitle is-6">Scan the QR code to pay</p>
+
                             </div>
 
                         </div>
@@ -89,7 +92,40 @@
             </div>
             <button class="modal-close is-large" aria-label="close"></button>
         </div>
-        <!-- end tiny modal card -->
+        <!-- end Pay Modal-->
+
+        <!--  Paid Modal -->
+        <div id="modal-card-paid-{{ product.id }}" class="modal modal-fx-3dSlit">
+            <div class="modal-background"></div>
+            <div class="modal-content is-tiny">
+                <!-- content -->
+                <div class="card">
+                    <div class="card-header">
+                        <p class="card-header-title is-6 is-centered">Congratulation, it is paid !</p>
+                    </div>
+
+                    <div class="card-content">
+                        <div class="media">
+                            <div class="media-left">
+                                <figure class="image is-48x48">
+                                    <img src="https://source.unsplash.com/hLyd1LukQ7E"
+                                         alt="linda barret avatar">
+                                </figure>
+                            </div>
+                            <div class="media-content">
+                                <p class="title is-4">{{ product.name }}</p>
+                                <p class="subtitle is-6">Price: $250</p>
+
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!-- end content -->
+            </div>
+            <button class="modal-close is-large" aria-label="close"></button>
+        </div>
+        <!-- end Paid Modal-->
         {% endfor %}
 
     </div>
