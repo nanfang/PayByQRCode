@@ -1,14 +1,16 @@
 import base64
-from io import BytesIO
-
-from django.shortcuts import render
 import qrcode
+from io import BytesIO
+from django.shortcuts import render, redirect
 from django.utils.http import urlencode
+from django.views import View
 from .models import products, STORE_NAME
+
+SESSION_KEY = 'customer'
 
 
 def index(request):
-    current_customer = 'Fang'
+    current_customer = request.session[SESSION_KEY]
     codes = {}
     for product in products:
         scheme = request.is_secure() and "https" or "http"
@@ -30,3 +32,13 @@ def index(request):
                    'current_customer': current_customer,
                    'products': products,
                    'codes': codes})
+
+
+class LoginView(View):
+
+    def get(self, request, *args, **kwargs):
+        return render(request, 'merchandise/login.html')
+
+    def post(self, request, *args, **kwargs):
+        request.session[SESSION_KEY] = request.POST[SESSION_KEY]
+        return redirect('/merchandise/')

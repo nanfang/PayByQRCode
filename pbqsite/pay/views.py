@@ -4,6 +4,7 @@ from django.views import View
 import channels.layers
 from asgiref.sync import async_to_sync
 
+from common.constants import MESSAGE_GROUP
 from merchandise.models import products, deliver_product, get_customer_orders
 from pay.models import get_balance, set_balance
 
@@ -36,7 +37,7 @@ class PayView(View):
 
         transaction(pay_for, pay_from, pay_to, product)
 
-        async_to_sync(self.channel_layer.group_send)('PAYMENT_CHANNEL_GROUP',
+        async_to_sync(self.channel_layer.group_send)(MESSAGE_GROUP % pay_for,
                                                      {
                                                          'type': 'payment_message',
                                                          'message': json.dumps(

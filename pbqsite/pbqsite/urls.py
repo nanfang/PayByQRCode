@@ -15,10 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from merchandise.views import LoginView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('merchandise/', include('merchandise.urls')),
     path('pay/', include('pay.urls')),
     path('api/v1/', include('api.urls')),
+    path('', LoginView.as_view()),
 ]
