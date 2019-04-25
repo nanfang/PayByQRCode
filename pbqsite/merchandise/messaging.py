@@ -1,5 +1,6 @@
 from channels.generic.websocket import AsyncWebsocketConsumer
-from common.constants import MESSAGE_GROUP
+
+from common.utils import get_message_group
 
 
 class PaymentConsumer(AsyncWebsocketConsumer):
@@ -10,14 +11,13 @@ class PaymentConsumer(AsyncWebsocketConsumer):
 
     async def connect(self):
         current_customer = self.scope['session']['customer']
-        self.group = MESSAGE_GROUP % current_customer
-        print('group=')
-        print(self.group)
+        self.group = get_message_group(current_customer)
         await self.channel_layer.group_add(
             self.group,
             self.channel_name,
         )
         await self.accept()
+
 
     async def disconnect(self, close_code):
         await self.channel_layer.group_discard(
