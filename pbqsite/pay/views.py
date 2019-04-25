@@ -4,7 +4,7 @@ from django.views import View
 import channels.layers
 from asgiref.sync import async_to_sync
 
-from merchandise.models import products, deliver_product
+from merchandise.models import products, deliver_product, get_customer_orders
 from pay.models import get_balance, set_balance
 
 
@@ -53,4 +53,15 @@ class PayView(View):
             pay_from=pay_from,
             pay_to=pay_to,
             product=product,
+        ))
+
+
+class PayStatsView(View):
+    def get(self, request, *args, **kwargs):
+        # /pay/?pay_to=Merchandise+Store&product_id=2&product_name=Powerful+Drill&pay_for=Fang
+        customer = request.GET['customer']
+        orders = get_customer_orders(customer)
+        balance = get_balance(customer)
+        return render(request, 'pay/pay_stats.html', dict(
+            balance=balance, customer=customer, orders=[(products[p_id], count) for p_id, count in orders.items()]
         ))

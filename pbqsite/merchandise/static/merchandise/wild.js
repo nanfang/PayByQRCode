@@ -13,7 +13,6 @@ var activateModal = function(modalId) {
     }
 }
 
-
 var paySocket = new WebSocket(
         'ws://' + window.location.host +
         '/merchandise/payment/');

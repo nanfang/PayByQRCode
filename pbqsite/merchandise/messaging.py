@@ -13,7 +13,6 @@ class PaymentConsumer(AsyncWebsocketConsumer):
             self.group_name,
             self.channel_name
         )
-
         await self.accept()
 
     async def disconnect(self, close_code):
