@@ -11,4 +11,4 @@ class ProductViewSet(viewsets.ViewSet):
     API endpoint that allows users to be viewed or edited.
     """
     def list(self, request):
-        return Response(json.dumps([o.__dict__ for o in products]))
+        return Response([o.__dict__ for o in products])
