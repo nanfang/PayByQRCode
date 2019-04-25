@@ -18,5 +18,5 @@ def set_balance(customer, balance):
     customer_balance[customer] = balance
 
 
-set_balance('Fang', 0)
+set_balance('Fang', 20)
 set_balance(STORE_NAME, 0)
