@@ -20,8 +20,8 @@
             <div class="column is-4 is-offset-4">
                 <h3 class="title has-text-grey">Scan & Pay</h3>
                 <p class="subtitle has-text-grey">
-                    Pay <b> <span class="has-text-danger"> ${{ product.price }} </span></b> to <b>{{ to }}</b> <br/>
-                    for a <b>{{ product.name }} </b> that <b class="has-text-primary"> {{ pay_for }} </b> wants!
+                    Pay <b> <span class="has-text-danger"> ${{ product.price }} </span></b> to <b>{{ pay_to }}</b> <br/>
+                    for a <b>{{ product.name }} </b> that <b> {{ pay_for }} </b> wants!
                 </p>
                 <div class="box">
                     <figure class="avatar">
@@ -31,8 +31,14 @@
                         {% csrf_token %}
                         <div class="field">
                             <div class="control">
+                                {% if pay_from %}
+                                Payment Account: <b class="has-text-primary is-bold"> {{ pay_from }} </b>
+                                <input type="hidden" name="pay_from" value="{{pay_from}}">
+                                {% else %}
                                 <input class="input is-large" placeholder="Your Pay Account" name="pay_from"
                                        autofocus="">
+                                {% endif %}
+
                                 <input type="hidden" name="pay_for" value="{{pay_for}}">
                                 <input type="hidden" name="pay_to" value="{{pay_to}}">
                                 <input type="hidden" name="product_id" value="{{product.id}}">

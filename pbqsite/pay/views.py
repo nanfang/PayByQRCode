@@ -25,6 +25,7 @@ class PayView(View):
             pay_to=request.GET['pay_to'],
             product=products[int(request.GET['product_id'])],
             pay_for=request.GET['pay_for'],
+            pay_from=request.GET.get('pay_from', ''),
         ))
 
     def post(self, request, *args, **kwargs):
